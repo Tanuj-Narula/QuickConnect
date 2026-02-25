@@ -1,0 +1,55 @@
+#message{
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        100% 100%,
+        5% 100%,
+        5% 25%,
+        0% 0%
+    );
+}
+
+#message-invert{
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        95% 25%,
+        95% 100%,
+        0% 100%,
+        0% 0%
+    );
+}
+
+.shadow-border-bottom{
+    box-shadow: 0px 1px 1px black;
+}
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #324049;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background-color: #1f2b31;
+}
+
+.rooms::-webkit-scrollbar{
+    width: 8px;
+}
+
+.dropdown{
+    clip-path:polygon(
+        0% 5%,
+        84% 5%,
+        89% 0%,
+        94% 5%,
+        100% 5%,
+        100% 100%,
+        0% 100%,
+        0% 5%
+    );
+}
