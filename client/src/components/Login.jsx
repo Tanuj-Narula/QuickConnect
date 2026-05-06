@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, setCredentials } from "../redux/user/userSlice";
+import { logout, setCredentials } from "../redux/user/userSlice.js";
 
 function Login({ use }) {
   const { token, user_id } = useSelector((state) => state.user);

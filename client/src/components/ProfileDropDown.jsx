@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { NavLink } from "react-router";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "../redux/user/userSlice";
-import { logout } from "../redux/user/userSlice";
+import { fetchUser } from "../redux/user/userSlice.js";
+import { logout } from "../redux/user/userSlice.js";
 import "./component.css";
 import axios from "axios";
 

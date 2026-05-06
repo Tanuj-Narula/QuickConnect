@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import ChatSection from "./ChatSection";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRoom, setId } from "../redux/rooms/singleroomSlice";
+import { fetchRoom, setId } from "../redux/rooms/singleRoomSlice.js";
 import useSocketRoom from "../hooks/useSocketRoom";
 
 function ChatPage() {
