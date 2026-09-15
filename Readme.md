@@ -1,4 +1,4 @@
-# QuickConnect 💬
+# QuickConnect  💬
 
 QuickConnect is a WebSocket-driven real-time communication platform built using the MERN stack and Socket.IO, enabling seamless room-based messaging with persistent chat history.
 
