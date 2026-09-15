@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "./component.css";
 import { useSelector } from "react-redux";
+import "./component.css";
 
 const MessageTag = ({ msg }) => {
   const { user_id } = useSelector((state) => state.user);
   const [sender, setsender] = useState("");
   const [msgTime, setmsgTime] = useState("");
 
-  function set_time(){
+  function set_time() {
+    if (!msg.timestamp) return;
     setmsgTime(
       new Date(msg.timestamp).toLocaleTimeString("en-us", {
         hour: "2-digit",
@@ -18,48 +19,58 @@ const MessageTag = ({ msg }) => {
   }
 
   useEffect(() => {
-    if (msg.user._id === user_id) {
+    if (msg.user?._id === user_id || msg.user === user_id) {
       setsender("you");
-    } else {
+    } else if (msg.user?.username) {
       setsender(msg.user.username);
+    } else if (msg.sender) {
+      setsender(msg.sender);
+    } else {
+      setsender("User");
     }
 
-    if(msg.timestamp){
+    if (msg.timestamp) {
       set_time();
     }
-  }, [msg]);
+  }, [msg, user_id]);
+
+  if (sender === "system") {
+    return (
+      <div className="flex justify-center my-2">
+        <div className="bg-[#121c2b]/90 border border-slate-700/50 text-slate-400 text-xs px-4 py-1.5 rounded-full shadow-sm">
+          {msg.text}
+        </div>
+      </div>
+    );
+  }
+
+  if (sender === "you") {
+    return (
+      <div className="flex flex-col items-end my-1">
+        <div className="max-w-[75%] sm:max-w-[60%] md:max-w-[480px] bg-gradient-to-tr from-[#0094d4] to-[#0072ff] text-white px-4 py-3 rounded-2xl rounded-tr-xs shadow-[0_4px_16px_rgba(0,180,255,0.22)] border border-cyan-300/20">
+          <p className="text-[14px] leading-relaxed break-words">{msg.text}</p>
+          <div className="flex justify-end items-center gap-1 mt-1">
+            <span className="text-[10px] text-cyan-100/75">{msgTime || "Just now"}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      {sender === "you" ? (
-        <div
-          id="message-invert"
-          className="bg-[#22666D] text-white font-[500] w-[300px] min-h-fit pr-2 pb-2 rounded-l-md ml-auto"
-        >
-          <div className="px-4">
-            <h2 className="text-sm text-right">{sender}</h2>
-            <p className="text-lg">{msg.text}</p>
-            <p className="text-xs text-right mt-2 ">{msgTime}</p>
-          </div>
+    <div className="flex flex-col items-start my-1">
+      <div className="max-w-[75%] sm:max-w-[60%] md:max-w-[480px] bg-[#121f30] text-slate-100 px-4 py-3 rounded-2xl rounded-tl-xs shadow-md border border-slate-700/60">
+        <span className="text-xs font-semibold text-[#00d2ff] block mb-1 capitalize">
+          {sender}
+        </span>
+        <p className="text-[14px] text-slate-200 leading-relaxed break-words">{msg.text}</p>
+        <div className="flex justify-end items-center gap-1 mt-1">
+          <span className="text-[10px] text-slate-400">{msgTime || "Just now"}</span>
         </div>
-      ) : sender == "system" ? (
-        <div className="bg-[#22282d] text-white  min-h-fit px-6 py-2 rounded-md text-center text-xs m-auto">
-          <p>{msg.text}</p>
-        </div>
-      ) : (
-        <div
-          id="message"
-          className="bg-[#324049] text-white w-[300px] min-h-fit pl-2 pb-2 rounded-r-md mr-auto"
-        >
-          <div className="px-4">
-            <h2 className="text-sm">{sender}</h2>
-            <p className="text-lg mt-1">{msg.text}</p>
-            <p className="text-xs text-right mt-2 ">{msgTime}</p>
-          </div>
-        </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 
 export default MessageTag;
+

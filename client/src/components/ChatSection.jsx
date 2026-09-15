@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { IoSend, IoCloseCircle } from "react-icons/io5";
+import { IoSend, IoClose } from "react-icons/io5";
+import { HiBriefcase, HiHashtag, HiUsers, HiChatBubbleLeftRight } from "react-icons/hi2";
 import MessageTag from "./MessageTag";
-import { useState } from "react";
 import { useSelector } from "react-redux";
+import "./component.css";
 
 function ChatSection({ Room, handleClose, msgs, sendMessage }) {
   const [input, setInput] = useState("");
@@ -15,7 +16,7 @@ function ChatSection({ Room, handleClose, msgs, sendMessage }) {
   }, [msgs]);
 
   useEffect(() => {
-    document.title = "QuickConnect | chat | " + Room.name;
+    document.title = "QuickConnect | " + Room.name;
   }, [Room]);
 
   const handleSubmit = (e) => {
@@ -26,57 +27,110 @@ function ChatSection({ Room, handleClose, msgs, sendMessage }) {
         room_id: Room._id,
         user_id: user_id,
       });
+      setInput("");
     }
-    setInput("");
+  };
+
+  const getHeaderIcon = (name) => {
+    const lower = (name || "").toLowerCase();
+    if (lower.includes("office") || lower.includes("work")) {
+      return <HiBriefcase className="text-cyan-400 text-lg" />;
+    }
+    if (lower.includes("formal") || lower.includes("team")) {
+      return <HiUsers className="text-indigo-400 text-lg" />;
+    }
+    if (lower.includes("unofficial") || lower.includes("general")) {
+      return <HiHashtag className="text-emerald-400 font-bold text-lg" />;
+    }
+    return <HiChatBubbleLeftRight className="text-sky-400 text-lg" />;
   };
 
   return (
     <motion.div
-      key={Room}
-      className="flex flex-col overflow-hidden h-screen  w-[80%]"
+      key={Room._id || Room.name}
+      className="flex flex-col h-screen w-full bg-[#080E18] text-slate-100 relative overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeInOut" }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
     >
-      <div className="shadow-border-bottom bg-[#3E505B] text-white fixed z-40 left-[20%] w-[80%] h-[55px] p-2">
-        <h1 className="text-3xl transition-all ml-3">{Room.name}</h1>
-        <span
-          className="cursor-pointer"
-          onClick={handleClose}
-          title="close window"
-        >
-          <IoCloseCircle size={30} className="absolute top-4 right-4" />
-        </span>
+      {/* Background Ambience */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+        <div className="absolute -top-32 right-0 w-96 h-96 bg-[#00d2ff]/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-[500px] h-[300px] bg-[#0072ff]/10 rounded-full blur-[100px]"></div>
       </div>
-      <div className="flex flex-col fixed ml-[20vw] w-[80vw] h-screen p-2 mt-[54px] bg-[url(/email-pattern.webp)] ">
-        <div className="flex flex-col flex-grow gap-2 pb-[150px] overflow-y-auto">
-          {msgs.map((msg, index) => {
-            return <MessageTag key={index} msg={msg} />;
-          })}
-          <div ref={scrollRef} />
+
+      {/* Top Header Bar */}
+      <header className="h-[68px] px-6 bg-[#0A121F]/90 backdrop-blur-md border-b border-slate-800/80 flex items-center justify-between z-20 select-none">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-[#122236] border border-cyan-500/20 flex items-center justify-center shadow-sm">
+            {getHeaderIcon(Room.name)}
+          </div>
+          <div>
+            <h1 className="text-base font-semibold text-white capitalize tracking-wide flex items-center gap-2">
+              {Room.name}
+              <span className="w-2 h-2 rounded-full bg-[#00e599] shadow-[0_0_8px_#00e599]"></span>
+            </h1>
+            <p className="text-xs text-slate-400">
+              Active Room • End-to-end connected
+            </p>
+          </div>
         </div>
 
-        <div className="flex justify-between fixed bottom-0 left-[20%] mt-auto w-[80%] py-2 px-4 bg-[#3E505B] shadow-[0px_-1px_1px_black]">
-          <form className="flex w-full" onSubmit={handleSubmit}>
+        <button
+          onClick={handleClose}
+          className="p-2 rounded-xl bg-[#121f30] hover:bg-[#1a2c42] border border-slate-700/50 text-slate-400 hover:text-white transition-all cursor-pointer shadow-sm active:scale-95"
+          title="Close room"
+        >
+          <IoClose size={20} />
+        </button>
+      </header>
+
+      {/* Messages Scroll Area */}
+      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4 custom-scrollbar z-10">
+        {msgs.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-center text-slate-400 space-y-2 select-none">
+            <div className="w-12 h-12 rounded-2xl bg-[#122236] border border-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl mb-1">
+              <HiChatBubbleLeftRight />
+            </div>
+            <p className="text-sm font-medium text-slate-300">No messages in this room yet</p>
+            <p className="text-xs text-slate-500">Say hello to kick off the conversation!</p>
+          </div>
+        ) : (
+          msgs.map((msg, index) => <MessageTag key={index} msg={msg} />)
+        )}
+        <div ref={scrollRef} />
+      </div>
+
+      {/* Bottom Floating Input Bar */}
+      <div className="p-4 bg-[#0A121F]/90 backdrop-blur-md border-t border-slate-800/80 z-20">
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-center gap-2.5 max-w-4xl mx-auto"
+        >
+          <div className="flex-1 flex items-center bg-[#121c2b] border border-slate-700/60 rounded-2xl px-4 py-3 focus-within:border-[#00d2ff]/60 focus-within:ring-1 focus-within:ring-[#00d2ff]/30 transition-all shadow-inner">
             <input
               type="text"
-              placeholder="Type your message here..."
-              className="border-l border-y outline-none act border-neutral-800 bg-white w-full p-2 rounded-l-xl"
+              placeholder={`Message in #${Room.name}...`}
+              className="bg-transparent border-none outline-none w-full text-sm text-slate-100 placeholder:text-slate-500"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <button
-              type="submit"
-              className="bg-[#22666D] text-white cursor-pointer hover:*:scale-125 p-4 border-r border-y border-neutral-800 w-auto  rounded-r-xl"
-            >
-              <IoSend size={20} />
-            </button>
-          </form>
-        </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={!input.trim()}
+            className="p-3.5 rounded-2xl bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:from-[#22dbff] hover:to-[#1a85ff] text-white shadow-[0_4px_18px_rgba(0,180,255,0.35)] disabled:opacity-40 disabled:pointer-events-none hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center flex-shrink-0"
+            title="Send message"
+          >
+            <IoSend size={17} />
+          </button>
+        </form>
       </div>
     </motion.div>
   );
 }
 
 export default ChatSection;
+
