@@ -7,7 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import "./component.css";
 import NewRoom from "./NewRoom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRooms } from "../redux/rooms/roomSlice";
+import { fetchRooms } from "../redux/rooms/roomSlice.js";
 
 function Sidebar() {
   const navigate = useNavigate();
