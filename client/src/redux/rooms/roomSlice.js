@@ -13,7 +13,7 @@ export const fetchRooms = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${process.env.SERVER_URL}/rooms/getall`, {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/rooms/getall`, {
         headers: {
           authorization: `Bearer ${token}`,
         },

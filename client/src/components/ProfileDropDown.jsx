@@ -34,7 +34,7 @@ function ProfileDropDown({ handleDropDown }) {
     }
     try {
       const response = await axios.delete(
-        `${process.env.SERVER_URL}/users/${user_id}`,
+        `${import.meta.env.VITE_SERVER_URL}/users/${user_id}`,
         {
           headers: {
             authorization: `Bearer ${token}`,

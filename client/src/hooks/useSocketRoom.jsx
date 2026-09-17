@@ -9,7 +9,7 @@ export default function useSocketRoom(roomId, userId, onMessage) {
   useEffect(() => {
     if (!roomId || !userId) return;
 
-    const socket = io(`${process.env.SERVER_URL}`, {
+    const socket = io(`${import.meta.env.VITE_SERVER_URL}`, {
       auth: {
         token: localStorage.getItem("token"),
       },

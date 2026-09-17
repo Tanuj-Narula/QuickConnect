@@ -24,7 +24,7 @@ function ChatPage() {
   async function fetchMessages() {
     try {
       const res = await axios.get(
-        `${process.env.SERVER_URL}/rooms/${room._id}/messages`,
+        `${import.meta.env.VITE_SERVER_URL}/rooms/${room._id}/messages`,
         {
           headers: { authorization: `Bearer ${token}` },
         },

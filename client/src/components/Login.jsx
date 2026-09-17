@@ -28,11 +28,14 @@ function Login({ use }) {
   }, [location]);
 
   const Sign_up = async () => {
-    const response = await axios.post(`${process.env.SERVER_URL}/auth/signup`, {
-      username: Username,
-      email: Email,
-      password: Password,
-    });
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/auth/signup`,
+      {
+        username: Username,
+        email: Email,
+        password: Password,
+      },
+    );
     if (response.status === 200) {
       window.alert(response.data.message);
       navigate("/login");
@@ -40,11 +43,14 @@ function Login({ use }) {
   };
 
   const Sign_in = async () => {
-    const response = await axios.post(`${process.env.SERVER_URL}/auth/login`, {
-      email: Email,
-      password: Password,
-      rememberMe: isChecked,
-    });
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/auth/login`,
+      {
+        email: Email,
+        password: Password,
+        rememberMe: isChecked,
+      },
+    );
     if (response.status === 200) {
       dispatch(
         setCredentials({

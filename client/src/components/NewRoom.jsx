@@ -22,7 +22,7 @@ function NewRoom({ setIsnewOpen }) {
     setIsSubmitting(true);
     try {
       const res = await axios.post(
-        `${process.env.SERVER_URL}/rooms`,
+        `${import.meta.env.VITE_SERVER_URL}/rooms`,
         {
           id: user_id,
           name: trimmed,

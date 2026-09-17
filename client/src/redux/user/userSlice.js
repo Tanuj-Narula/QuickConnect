@@ -18,7 +18,7 @@ export const fetchUser = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const { token, user_id } = getState().user;
     try {
-      const res = await axios.get(`${process.env.SERVER_URL}/users/${user_id}`, {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/users/${user_id}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
