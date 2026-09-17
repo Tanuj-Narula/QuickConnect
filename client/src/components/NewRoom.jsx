@@ -22,7 +22,7 @@ function NewRoom({ setIsnewOpen }) {
     setIsSubmitting(true);
     try {
       const res = await axios.post(
-        "http://localhost:3000/rooms",
+        `${process.env.SERVER_URL}/rooms`,
         {
           id: user_id,
           name: trimmed,
@@ -31,7 +31,7 @@ function NewRoom({ setIsnewOpen }) {
           headers: {
             authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (res.status === 200 || res.status === 201) {
         setStatusMsg("Room created successfully! ✔");
@@ -42,9 +42,7 @@ function NewRoom({ setIsnewOpen }) {
         }, 600);
       }
     } catch (error) {
-      setStatusMsg(
-        error.response?.data?.message || "Failed to create room"
-      );
+      setStatusMsg(error.response?.data?.message || "Failed to create room");
     } finally {
       setIsSubmitting(false);
     }
@@ -101,4 +99,3 @@ function NewRoom({ setIsnewOpen }) {
 }
 
 export default NewRoom;
-

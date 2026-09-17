@@ -28,7 +28,7 @@ function Login({ use }) {
   }, [location]);
 
   const Sign_up = async () => {
-    const response = await axios.post("http://localhost:3000/auth/signup", {
+    const response = await axios.post(`${process.env.SERVER_URL}/auth/signup`, {
       username: Username,
       email: Email,
       password: Password,
@@ -40,7 +40,7 @@ function Login({ use }) {
   };
 
   const Sign_in = async () => {
-    const response = await axios.post("http://localhost:3000/auth/login", {
+    const response = await axios.post(`${process.env.SERVER_URL}/auth/login`, {
       email: Email,
       password: Password,
       rememberMe: isChecked,
@@ -50,7 +50,7 @@ function Login({ use }) {
         setCredentials({
           token: response.data.token,
           user_id: response.data.user.id,
-        })
+        }),
       );
       navigate("/");
     } else {
@@ -61,7 +61,7 @@ function Login({ use }) {
   const update = async () => {
     console.log(user_id, token);
     const response = await axios.put(
-      `http://localhost:3000/users/update/${user_id}`,
+      `${process.env.SERVER_URL}/users/update/${user_id}`,
       {
         username: Username,
         email: Email,
@@ -71,7 +71,7 @@ function Login({ use }) {
         headers: {
           authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     if (response.status === 200) {
       window.alert(response.data.message + "\nlogin again");

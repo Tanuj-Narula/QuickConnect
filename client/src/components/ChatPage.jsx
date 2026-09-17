@@ -23,10 +23,11 @@ function ChatPage() {
   }
   async function fetchMessages() {
     try {
-      const res = await axios.get(`http://localhost:3000/rooms/${room._id}/messages`,
+      const res = await axios.get(
+        `${process.env.SERVER_URL}/rooms/${room._id}/messages`,
         {
           headers: { authorization: `Bearer ${token}` },
-        }
+        },
       );
       setMessages(res.data);
     } catch (error) {

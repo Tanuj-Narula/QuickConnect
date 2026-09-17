@@ -1,14 +1,20 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-import { IoLogOutOutline, IoTrashOutline, IoPersonOutline } from "react-icons/io5";
+import {
+  IoLogOutOutline,
+  IoTrashOutline,
+  IoPersonOutline,
+} from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, logout } from "../redux/user/userSlice.js";
 import axios from "axios";
 
 function ProfileDropDown({ handleDropDown }) {
   const dispatch = useDispatch();
-  const { user, loading, error, user_id, token } = useSelector((state) => state.user);
+  const { user, loading, error, user_id, token } = useSelector(
+    (state) => state.user,
+  );
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -19,15 +25,22 @@ function ProfileDropDown({ handleDropDown }) {
   }
 
   async function handleDelete() {
-    if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone.",
+      )
+    ) {
       return;
     }
     try {
-      const response = await axios.delete(`http://localhost:3000/users/${user_id}`, {
-        headers: {
-          authorization: `Bearer ${token}`,
+      const response = await axios.delete(
+        `${process.env.SERVER_URL}/users/${user_id}`,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (response.status === 200) {
         window.alert(response.data.message);
         dispatch(logout());
@@ -91,4 +104,3 @@ function ProfileDropDown({ handleDropDown }) {
 }
 
 export default ProfileDropDown;
-

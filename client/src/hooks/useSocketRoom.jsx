@@ -9,7 +9,7 @@ export default function useSocketRoom(roomId, userId, onMessage) {
   useEffect(() => {
     if (!roomId || !userId) return;
 
-    const socket = io("http://localhost:3000", {
+    const socket = io(`${process.env.SERVER_URL}`, {
       auth: {
         token: localStorage.getItem("token"),
       },
@@ -29,7 +29,7 @@ export default function useSocketRoom(roomId, userId, onMessage) {
 
     socket.on("receiveMessage", (data) => {
       if (onMessage) {
-        console.log(data)
+        console.log(data);
         onMessage(data);
       } else {
         console.log("📩 Message received:", data);
@@ -38,7 +38,7 @@ export default function useSocketRoom(roomId, userId, onMessage) {
 
     return () => {
       if (socket.connected) {
-        socket.emit("leave_room", roomId , userId);
+        socket.emit("leave_room", roomId, userId);
       }
       socket.disconnect();
       setConnected(false);
