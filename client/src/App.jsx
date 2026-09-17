@@ -13,6 +13,8 @@ function App() {
   const { token } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  console.log("url=", process.env.SERVER_URL);
+
   useEffect(() => {
     if (token) {
       checkTokenExpiry(dispatch, token);
