@@ -27,7 +27,8 @@ function Sidebar({ onOpenNewRoom, isNewOpenExternal, setIsNewOpenExternal }) {
   const [newOpenLocal, setIsnewOpenLocal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const newOpen = isNewOpenExternal !== undefined ? isNewOpenExternal : newOpenLocal;
+  const newOpen =
+    isNewOpenExternal !== undefined ? isNewOpenExternal : newOpenLocal;
   const setIsnewOpen = setIsNewOpenExternal || setIsnewOpenLocal;
 
   const handleRoomClick = (roomId) => {
@@ -64,7 +65,11 @@ function Sidebar({ onOpenNewRoom, isNewOpenExternal, setIsNewOpenExternal }) {
         activeDot: false,
       };
     }
-    if (lower.includes("unofficial") || lower.includes("general") || index % 4 === 2) {
+    if (
+      lower.includes("unofficial") ||
+      lower.includes("general") ||
+      index % 4 === 2
+    ) {
       return {
         icon: <HiHashtag className="text-[#34d399] font-bold text-lg" />,
         bg: "bg-[#0d2e24] border-[#10b981]/30",
@@ -88,7 +93,7 @@ function Sidebar({ onOpenNewRoom, isNewOpenExternal, setIsNewOpenExternal }) {
   };
 
   const filteredRooms = (rooms || []).filter((r) =>
-    (r.name || "").toLowerCase().includes(searchQuery.toLowerCase())
+    (r.name || "").toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -188,12 +193,7 @@ function Sidebar({ onOpenNewRoom, isNewOpenExternal, setIsNewOpenExternal }) {
 
       {/* Rooms List Content */}
       <div className="flex-1 px-3 py-1 space-y-2.5 overflow-y-auto custom-scrollbar">
-        {loading ? (
-          <div className="p-6 text-center text-slate-400 text-xs flex flex-col items-center gap-2">
-            <div className="w-5 h-5 border-2 border-[#00d2ff] border-t-transparent rounded-full animate-spin"></div>
-            <span>Loading rooms...</span>
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="p-4 text-center text-red-400 text-xs bg-red-950/30 rounded-xl border border-red-800/40">
             {error?.err?.message || "Failed to load rooms"}
           </div>
@@ -262,7 +262,9 @@ function Sidebar({ onOpenNewRoom, isNewOpenExternal, setIsNewOpenExternal }) {
       <div className="p-3 mt-auto">
         <div className="bg-[#0f1b2b]/90 border border-slate-800/90 rounded-2xl p-3.5 shadow-lg">
           <p className="italic text-slate-300 text-xs font-light leading-relaxed">
-            “Good conversations<br />build great things.”
+            “Good conversations
+            <br />
+            build great things.”
           </p>
           <div className="w-9 h-[2px] bg-[#00d2ff] mt-2 rounded-full shadow-[0_0_8px_#00d2ff]"></div>
         </div>
@@ -272,4 +274,3 @@ function Sidebar({ onOpenNewRoom, isNewOpenExternal, setIsNewOpenExternal }) {
 }
 
 export default Sidebar;
-
